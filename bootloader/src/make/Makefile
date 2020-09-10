@@ -2,6 +2,8 @@
 BUILD = build
 BIN = bootloader
 
+OPENOCD_CONFIG ?= ../openocd/openocd.cfg
+
 ##############################################################################
 .PHONY: all directory clean size
 
@@ -76,5 +78,8 @@ size: $(BUILD)/$(BIN).elf
 clean:
 	@echo clean
 	@-rm -rf $(BUILD)
+
+program: $(BUILD)/$(BIN).hex
+	openocd -f $(OPENOCD_CONFIG)
 
 -include $(wildcard $(BUILD)/*.d)
