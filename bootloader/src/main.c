@@ -26,7 +26,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stdalign.h>
-#include "samd10.h"
+#include "samd21.h"
 #include "spritz.h"
 
 //-----------------------------------------------------------------------------

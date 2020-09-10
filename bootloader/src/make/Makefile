@@ -22,7 +22,7 @@ CFLAGS += -flto
 
 LDFLAGS += -mcpu=cortex-m0plus -mthumb
 LDFLAGS += -Wl,--gc-sections
-LDFLAGS += -Wl,--script=../linker/samd10_bl.ld
+LDFLAGS += -Wl,--script=../linker/samd21j18.ld
 LDFLAGS += -nostdlib
 LDFLAGS += -flto
 
@@ -36,7 +36,7 @@ SRCS += \
   ../startup.c
 
 DEFINES += \
-  -D__SAMD10D14AM__ \
+  -D__SAMD21J18A__ \
   -DDONT_USE_CMSIS_INIT \
   -DF_CPU=8000000
 
