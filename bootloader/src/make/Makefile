@@ -1,9 +1,11 @@
 ##############################################################################
-BUILD = build_SAMD10x14A_16K
-BIN = bootloader_SAMD10x14A_16K
+BUILD = build
+BIN = bootloader
 
 ##############################################################################
 .PHONY: all directory clean size
+
+MKDIR = mkdir
 
 CC = arm-none-eabi-gcc
 OBJCOPY = arm-none-eabi-objcopy
@@ -65,7 +67,7 @@ $(BUILD)/$(BIN)_upd.bin: $(BUILD)/$(BIN).elf
 	@$(CC) $(CFLAGS) $(filter %/$(subst .o,.c,$(notdir $@)), $(SRCS)) -c -o $@
 
 directory:
-	@gmkdir -p $(BUILD)
+	@$(MKDIR) -p $(BUILD)
 
 size: $(BUILD)/$(BIN).elf
 	@echo size:
