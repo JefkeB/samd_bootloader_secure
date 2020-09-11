@@ -4,8 +4,16 @@ BIN = app
 
 OPENOCD_CONFIG = ../openocd/openocd.cfg
 
+STANDALONE ?= 1
+
+LD_STANDALONE = ../linker/samd21j18.standalone.ld
+LD_BOOTLOADER = ../linker/samd21j18.bootloader.ld
+
 ##############################################################################
 .PHONY: all directory clean size
+
+ccyellow=$(echo -e "\033[0;33m")
+ccend=$(echo -e "\033[0m")
 
 CC = arm-none-eabi-gcc
 OBJCOPY = arm-none-eabi-objcopy
@@ -16,6 +24,7 @@ ifeq ($(OS), Windows_NT)
 else
   MKDIR = mkdir
 endif
+MKDIR = mkdir
 
 CFLAGS += -W -Wall --std=gnu99 -Os
 CFLAGS += -fno-diagnostics-show-caret
@@ -26,7 +35,17 @@ CFLAGS += -MD -MP -MT $(BUILD)/$(*F).o -MF $(BUILD)/$(@F).d
 
 LDFLAGS += -mcpu=cortex-m0plus -mthumb
 LDFLAGS += -Wl,--gc-sections
-LDFLAGS += -Wl,--script=../linker/samd21j18.ld
+ifeq ($(STANDALONE), 1)
+$(info .)
+$(info ### Building Standalone version ###)
+$(info .)
+LDFLAGS += -Wl,--script=$(LD_STANDALONE)
+else
+$(info .)
+$(info *** Building Bootloader version ***)
+$(info .)
+LDFLAGS += -Wl,--script=$(LD_BOOTLOADER)
+endif
 
 INCLUDES += \
   -I../include \
