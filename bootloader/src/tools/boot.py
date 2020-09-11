@@ -7,10 +7,14 @@ import serial
 import optparse
 
 #------------------------------------------------------------------------------
-BL_CMD_UNLOCK    = 0xa0
-BL_CMD_DATA      = 0xa1
-BL_CMD_VERIFY    = 0xa2
-BL_CMD_RESET     = 0xa3
+BOOTLOADER_SIZE     = 4096
+BAUDRATE            = 115200
+
+#------------------------------------------------------------------------------
+BL_CMD_UNLOCK       = 0xa0
+BL_CMD_DATA         = 0xa1
+BL_CMD_VERIFY       = 0xa2
+BL_CMD_RESET        = 0xa3
 
 BL_RESP_OK          = 0x50
 BL_RESP_ERROR       = 0x51
@@ -18,7 +22,6 @@ BL_RESP_INVALID     = 0x52
 BL_RESP_VERIFY_OK   = 0x53
 BL_RESP_VERIFY_FAIL = 0x54
 
-BOOTLOADER_SIZE  = 2048
 
 #------------------------------------------------------------------------------
 def error(text):
@@ -65,8 +68,10 @@ def send_request(port, cmd, data = []):
     port.write(''.join(map(chr, req)))
     resp = get_response(port)
 
-    if resp is None:
-      warning('no response received, retrying %d' % (i+1))
+    if resp is None:      
+      # do not show first warning      
+      if i > 0 :
+        warning('no response received, retrying %d' % (i+1))
       time.sleep(0.2)
     else:
       return resp
@@ -76,7 +81,7 @@ def send_request(port, cmd, data = []):
 #------------------------------------------------------------------------------
 def main():
   parser = optparse.OptionParser(usage = 'usage: %prog [options]')
-  parser.add_option('-v', '--verbose', dest='verbose', help='enable verbose output', default=False, action='store_true')
+  parser.add_option('-q', '--quiet', dest='quiet', help='disable verbose output', default=False, action='store_true')
   parser.add_option('-t', '--tune', dest='tune', help='auto-tune UART baudrate', default=False, action='store_true')
   parser.add_option('-i', '--interface', dest='port', help='communication interface', metavar='PATH')
   parser.add_option('-f', '--file', dest='file', help='binary file to program', metavar='FILE')
@@ -89,8 +94,11 @@ def main():
   if options.file is None:
     error('file name is required')
 
+  # default verbose
+  options.verbose = not options.quiet
+
   try:
-    port = serial.Serial(options.port, 115200, timeout=1)
+    port = serial.Serial(options.port, BAUDRATE, timeout=1)
   except serial.serialutil.SerialException, inst:
     error(inst)
 
