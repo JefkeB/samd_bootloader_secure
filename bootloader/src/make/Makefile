@@ -21,6 +21,7 @@ CFLAGS += -mcpu=cortex-m0plus -mthumb
 CFLAGS += -MD -MP -MT $(BUILD)/$(*F).o -MF $(BUILD)/$(@F).d
 CFLAGS += -nostdlib
 CFLAGS += -flto
+CFLAGS += -g
 
 LDFLAGS += -mcpu=cortex-m0plus -mthumb
 LDFLAGS += -Wl,--gc-sections
