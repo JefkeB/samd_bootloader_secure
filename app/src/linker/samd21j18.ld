@@ -28,8 +28,8 @@
 
 MEMORY
 {
-  flash (rx) : ORIGIN = 0x00000000, LENGTH = 0x40000 /* 256k */
-  ram  (rwx) : ORIGIN = 0x20000000, LENGTH = 0x8000 /* 32k */
+  flash (rx) : ORIGIN = 0x00001000, LENGTH = 0x40000 - 0x1000 /* 256k */
+  ram  (rwx) : ORIGIN = 0x20000010, LENGTH = 0x8000 -  0x10 /* 32k */
 }
 
 __top_flash = ORIGIN(flash) + LENGTH(flash);
