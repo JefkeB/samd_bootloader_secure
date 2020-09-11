@@ -30,27 +30,30 @@
 #include "spritz.h"
 
 //-----------------------------------------------------------------------------
+#define BOOTLOADER_FLASH_AREA_SIZE    4096
+
+//-----------------------------------------------------------------------------
 #define BL_REQ_PORT           0 // PA
-#define BL_REQ_PIN            PIN_PA25
+#define BL_REQ_PIN            PIN_PA15
 
 #define UART_TX_PORT          0 // PA
-#define UART_TX_PIN           PIN_PA10C_SERCOM0_PAD2
-#define UART_TX_MUX           MUX_PA10C_SERCOM0_PAD2
+#define UART_TX_PIN           PIN_PA22C_SERCOM3_PAD0
+#define UART_TX_MUX           MUX_PA22C_SERCOM3_PAD0
 
 #define UART_RX_PORT          0 // PA
-#define UART_RX_PIN           PIN_PA11C_SERCOM0_PAD3
-#define UART_RX_MUX           MUX_PA11C_SERCOM0_PAD3
+#define UART_RX_PIN           PIN_PA23C_SERCOM3_PAD1
+#define UART_RX_MUX           MUX_PA23C_SERCOM3_PAD1
 
-#define UART_SERCOM           SERCOM0
+#define UART_SERCOM           SERCOM3
 #define UART_SERCOM_PMUX      HAL_GPIO_PMUX_C
-#define UART_SERCOM_GCLK_ID   SERCOM0_GCLK_ID_CORE
-#define UART_SERCOM_APBCMASK  PM_APBCMASK_SERCOM0
-#define UART_SERCOM_TXPO      SERCOM_USART_CTRLA_TXPO(1/*PAD2*/)
-#define UART_SERCOM_RXPO      SERCOM_USART_CTRLA_RXPO(3/*PAD3*/)
+#define UART_SERCOM_GCLK_ID   SERCOM3_GCLK_ID_CORE
+#define UART_SERCOM_APBCMASK  PM_APBCMASK_SERCOM3
+#define UART_SERCOM_TXPO      SERCOM_USART_CTRLA_TXPO(0)
+#define UART_SERCOM_RXPO      SERCOM_USART_CTRLA_RXPO(1)
 
 #define UART_BAUDRATE         115200
 
-#define BOOTLOADER_SIZE       (2048 - 256)
+#define BOOTLOADER_SIZE       (BOOTLOADER_FLASH_AREA_SIZE - 256)
 #define USER_DATA_SIZE        256
 #define SECURITY_KEY_OFFSET   (FLASH_ADDR + BOOTLOADER_SIZE)
 #define APPLICATION_START     (FLASH_ADDR + BOOTLOADER_SIZE + USER_DATA_SIZE)
